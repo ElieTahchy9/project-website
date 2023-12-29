@@ -1,0 +1,17 @@
+h1 {
+    font-size:32px
+   }
+  
+  h1.large {
+   font-weight:800;
+   font-size:44px
+  }
+  .container {
+   text-align: center;
+ }
+ 
+ .summary-item {
+   display: inline-block;
+   width: 30%;
+   margin-right: 2%;
+ }
