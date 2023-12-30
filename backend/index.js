@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 // Fetch images from the database for the city "Faraya"
 app.get('/api/images/faraya', (req, res) => {
   const cityName = 'Faraya'; // Specify the city name
-  const sql = 'SELECT Id_city, Name_city, city_url FROM city WHERE Name_city = ?';
+  const sql = 'SELECT Id_city, Name_city, Region_city, Description_city, city_url FROM city WHERE Name_city = ?';
 
   db.query(sql, [cityName], (err, results) => {
     if (err) {
@@ -56,7 +56,7 @@ app.get('/api/images/faraya', (req, res) => {
 // Fetch image URL from the database for the city "saida"
 app.get('/api/images/saida', (req, res) => {
   const cityName = 'Saida';
-  const sql = 'SELECT ID_city, Name_city, city_url FROM city WHERE Name_city = ?';
+  const sql = 'SELECT ID_city, Name_city,Region_city, Description_city, city_url FROM city WHERE Name_city = ?';
 
   db.query(sql, [cityName], (err, results) => {
     if (err) {
@@ -77,7 +77,7 @@ app.get('/api/images/saida', (req, res) => {
 // Fetch image URL from the database for the city "Jbeil" (Byblos)
 app.get('/api/images/jbeil', (req, res) => {
   const cityName = 'Jbeil';
-  const sql = 'SELECT ID_city, Name_city, city_url FROM city WHERE Name_city = ?';
+  const sql = 'SELECT ID_city, Name_city, Region_city, Description_city, city_url FROM city WHERE Name_city = ?';
 
   db.query(sql, [cityName], (err, results) => {
     if (err) {
@@ -99,7 +99,7 @@ app.get('/api/images/jbeil', (req, res) => {
 // Fetch image URL from the database for the city "Zahle"
 app.get('/api/images/zahle', (req, res) => {
   const cityName = 'Zahle';
-  const sql = 'SELECT ID_city, Name_city, city_url FROM city WHERE Name_city = ?';
+  const sql = 'SELECT ID_city, Name_city,Region_city, Description_city, city_url FROM city WHERE Name_city = ?';
 
   db.query(sql, [cityName], (err, results) => {
     if (err) {
@@ -120,7 +120,7 @@ app.get('/api/images/zahle', (req, res) => {
 // Fetch image URL from the database for the city "Baalbek"
 app.get('/api/images/baalbak', (req, res) => {
   const cityName = 'Baalbak';
-  const sql = 'SELECT ID_city, Name_city, city_url FROM city WHERE Name_city = ?';
+  const sql = 'SELECT ID_city, Name_city, Region_city, Description_city, city_url FROM city WHERE Name_city = ?';
 
   db.query(sql, [cityName], (err, results) => {
     if (err) {
@@ -141,7 +141,7 @@ app.get('/api/images/baalbak', (req, res) => {
 // Fetch image URL from the database for the city "Bcharre"
 app.get('/api/images/bcharre', (req, res) => {
   const cityName = 'Bcharre';
-  const sql = 'SELECT ID_city, Name_city, city_url FROM city WHERE Name_city = ?';
+  const sql = 'SELECT ID_city, Name_city, Region_city, Description_city, city_url FROM city WHERE Name_city = ?';
 
   db.query(sql, [cityName], (err, results) => {
     if (err) {
@@ -162,7 +162,7 @@ app.get('/api/images/bcharre', (req, res) => {
 // Fetch image URL from the database for the city "Laqlouq"
 app.get('/api/images/laqlouq', (req, res) => {
   const cityName = 'Laqlouq';
-  const sql = 'SELECT ID_city, Name_city, city_url FROM city WHERE Name_city = ?';
+  const sql = 'SELECT ID_city, Name_city,Region_city, Description_city, city_url FROM city WHERE Name_city = ?';
 
   db.query(sql, [cityName], (err, results) => {
     if (err) {
@@ -183,7 +183,7 @@ app.get('/api/images/laqlouq', (req, res) => {
 // Fetch image URL from the database for the city "Harissa"
 app.get('/api/images/harissa', (req, res) => {
   const cityName = 'Harissa';
-  const sql = 'SELECT ID_city, Name_city, city_url FROM city WHERE Name_city = ?';
+  const sql = 'SELECT ID_city, Name_city,Region_city, Description_city, city_url FROM city WHERE Name_city = ?';
 
   db.query(sql, [cityName], (err, results) => {
     if (err) {
@@ -204,7 +204,7 @@ app.get('/api/images/harissa', (req, res) => {
 // Fetch image URL from the database for the city "Batroun"
 app.get('/api/images/batroun', (req, res) => {
   const cityName = 'Batroun';
-  const sql = 'SELECT ID_city, Name_city, city_url FROM city WHERE Name_city = ?';
+  const sql = 'SELECT ID_city, Name_city,Region_city, Description_city, city_url FROM city WHERE Name_city = ?';
 
   db.query(sql, [cityName], (err, results) => {
     if (err) {
@@ -224,7 +224,7 @@ app.get('/api/images/batroun', (req, res) => {
 // Fetch image URL from the database for the city "Qoubayat"
 app.get('/api/images/qoubayat', (req, res) => {
   const cityName = 'Qoubayat';
-  const sql = 'SELECT ID_city, Name_city, city_url FROM city WHERE Name_city = ?';
+  const sql = 'SELECT ID_city, Name_city,  Region_city, Description_city, city_url FROM city WHERE Name_city = ?';
 
   db.query(sql, [cityName], (err, results) => {
     if (err) {
@@ -244,7 +244,7 @@ app.get('/api/images/qoubayat', (req, res) => {
 // Fetch image URL from the database for the city "Beirut"
 app.get('/api/images/beirut', (req, res) => {
   const cityName = 'Beirut';
-  const sql = 'SELECT ID_city, Name_city, city_url FROM city WHERE Name_city = ?';
+  const sql = 'SELECT ID_city, Name_city,Region_city, Description_city, city_url FROM city WHERE Name_city = ?';
 
   db.query(sql, [cityName], (err, results) => {
     if (err) {
@@ -316,6 +316,29 @@ app.post('/api/payment', (req, res) => {
   });
 });
 
+app.get('/api/city/:id/activity-urls', (req, res) => {
+  const cityId = req.params.id;
+
+  const query = `
+    SELECT activity_url, activity_url2, activity_url3, activity_url4
+    FROM activity
+    WHERE Id_city = ?;
+  `;
+
+  db.query(query, [cityId], (err, results) => {
+    if (err) {
+      console.error('Error querying MySQL:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      if (results.length === 0) {
+        res.status(404).json({ error: 'City not found' });
+      } else {
+        const activityUrls = results[0];
+        res.json(activityUrls);
+      }
+    }
+  });
+});
 
 
 
@@ -326,6 +349,8 @@ app.get('/', (req, res) => {
 app.get('/hello', (req, res) => {
   res.send('Hello world ');
 });
+
+
 
 
 
