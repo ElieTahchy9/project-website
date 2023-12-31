@@ -4,7 +4,7 @@ const mysql = require('mysql');
 const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
-
+const bcrypt =require('bcrypt');
 
 const app = express();
 app.use(cors());
@@ -277,19 +277,7 @@ app.get('/api/images/all', (req, res) => {
 });
 
 
-// Fetch activities for all cities
-app.get('/api/activities/all', (req, res) => {
-  const sql = 'SELECT * FROM activity_type';
 
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error('Error fetching activities:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    } else {
-      res.json(results);
-    }
-  });
-});
 
 
 // API endpoint to handle payment POST requests
@@ -340,6 +328,67 @@ app.get('/api/city/:id/activity-urls', (req, res) => {
   });
 });
 
+// activityDeatisl info retreive  
+
+app.get('/api/city/:id/activity-details', (req, res) => {
+  const cityId = req.params.id;
+
+  const query = `
+    SELECT Details_id, Cost_day, Day_details, Program_city, Id_city, Name_city, Region_city, Description_city ,location_url , location_url2
+    FROM activity_details
+    WHERE Id_city = ?;
+  `;
+
+  db.query(query, [cityId], (err, results) => {
+    if (err) {
+      console.error('Error querying MySQL:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      if (results.length === 0) {
+        res.status(404).json({ error: 'City not found' });
+      } else {
+        const activityDetails = results[0];
+        res.json(activityDetails);
+      }
+    }
+  });
+});
+
+
+
+/// sign up  
+
+app.post('/api/signup', async (req, res) => {
+  const { client_name, client_username, client_email, client_phone, client_password } = req.body;
+
+  // Check if required fields are present
+  if (!client_name || !client_username || !client_email || !client_password) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(client_password, 10);
+
+    // Insert user data into the 'Client' table
+    const sql = 'INSERT INTO Client (client_name, client_username, client_email, client_phone, client_password) VALUES (?, ?, ?, ?, ?)';
+    const values = [client_name, client_username, client_email, client_phone, hashedPassword];
+
+    db.query(sql, values, (err, results) => {
+      if (err) {
+        console.error('Error inserting user:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+        res.status(201).json({ message: 'User successfully registered' });
+      }
+    });
+  } catch (error) {
+    console.error('Error hashing password:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// end sign up 
 
 
 app.get('/', (req, res) => {
@@ -349,6 +398,52 @@ app.get('/', (req, res) => {
 app.get('/hello', (req, res) => {
   res.send('Hello world ');
 });
+
+//login 
+
+app.post('/api/login', (req, res) => {
+  const { client_username, client_password } = req.body;
+
+  // Validate the required fields
+  if (!client_username || !client_password) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  // Fetch hashed password from the database for the provided username
+  const sql = 'SELECT client_password FROM client WHERE client_username = ?';
+  db.query(sql, [client_username], (err, result) => {
+    if (err) {
+      console.error('Error during login:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    if (result.length === 0) {
+      // No user found with the provided username or password is not available
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const hashedPassword = result[0].client_password;
+
+    // Compare the provided password with the hashed password
+    bcrypt.compare(client_password, hashedPassword, (compareErr, passwordMatch) => {
+      if (compareErr) {
+        console.error('Error during password comparison:', compareErr);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      if (passwordMatch) {
+        // Passwords match, login successful
+        res.status(200).json({ message: 'Login successful' });
+      } else {
+        // Passwords don't match
+        res.status(401).json({ error: 'Invalid credentials' });
+      }
+    });
+  });
+});
+
+// end login 
+
 
 
 
