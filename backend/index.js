@@ -308,7 +308,7 @@ app.get('/api/city/:id/activity-urls', (req, res) => {
   const cityId = req.params.id;
 
   const query = `
-    SELECT activity_url, activity_url2, activity_url3, activity_url4
+    SELECT activity_url, activity_url2, activity_url3
     FROM activity
     WHERE Id_city = ?;
   `;
@@ -334,7 +334,7 @@ app.get('/api/city/:id/activity-details', (req, res) => {
   const cityId = req.params.id;
 
   const query = `
-    SELECT Details_id, Cost_day, Day_details, Program_city, Id_city, Name_city, Region_city, Description_city ,location_url , location_url2
+    SELECT Details_id, Cost_day, Day_details, Program_city, Id_city, Name_city, Region_city, Description_city ,location_url , location_url2 , location_url_3 , location_url_4
     FROM activity_details
     WHERE Id_city = ?;
   `;
